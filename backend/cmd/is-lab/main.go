@@ -2,12 +2,12 @@ package main
 
 import (
 	"context"
-	"github.com/v1shn3vsk7/is-lab/internal/app"
 
 	"github.com/caarlos0/env"
 	"github.com/joho/godotenv"
 	"github.com/rs/zerolog/log"
 
+	"github.com/v1shn3vsk7/is-lab/internal/app"
 	"github.com/v1shn3vsk7/is-lab/internal/config"
 )
 
