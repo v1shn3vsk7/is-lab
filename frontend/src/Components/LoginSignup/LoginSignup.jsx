@@ -22,16 +22,7 @@ const LoginSignup = () => {
             }
 
             if (email && password) {
-                // Perform login request
-                // Replace the following code with your actual login logic using appropriate AJAX or fetch request
-                if (email === 'example@example.com' && password === 'password') {
-                    // Successful login
-                    console.log('Login successful');
-                    // Redirect to user page using appropriate routing library or method
-                } else {
-                    // Failed login
-                    setError('Неверный логин или пароль');
-                }
+
             } else {
                 setError('Пожалуйста, заполните все поля');
             }
