@@ -1,0 +1,19 @@
+.program-info {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+
+.program-info h3 {
+    color: #f1f1f1;
+}
+
+.modal-content {
+    position: fixed;
+    background: #fff;
+    padding: 1px;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
