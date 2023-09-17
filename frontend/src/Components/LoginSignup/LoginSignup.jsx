@@ -1,8 +1,11 @@
 import React, {useState} from 'react'
+import { useNavigate } from 'react-router-dom';
 import './LoginSignup.css'
 import user_icon from '../Assets/person.png'
 import email_icon from '../Assets/email.png'
 import password_icon from '../Assets/password.png'
+import axios from "axios";
+
 
 const LoginSignup = () => {
     const [action,setAction] = useState("Регистрация")
@@ -10,8 +13,9 @@ const LoginSignup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         setError(null)
 
@@ -22,6 +26,30 @@ const LoginSignup = () => {
             }
 
             if (email && password) {
+                try {
+                    const response = await axios.get('http://localhost:8080/api/find_user', {
+                        params: {
+                            login: email,
+                            password: password,
+                        }
+                    });
+
+                    const userData = response.data
+
+                    if (userData) {
+                        navigate(`/account/${userData.ID}`, {
+                            state: {
+                                user_id: userData.user_id,
+                                username: userData.username,
+                                is_blocked: userData.is_blocked,
+                                is_password_constraint: userData.is_password_constraint,
+                            },
+                        });
+                    }
+
+                } catch (error) {
+                    setError(error.message)
+                }
 
             } else {
                 setError('Пожалуйста, заполните все поля');

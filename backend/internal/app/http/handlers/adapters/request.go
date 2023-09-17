@@ -20,14 +20,21 @@ func UserFromAPI(req *models.CreateUserRequest) *modelsRepo.User {
 	}
 }
 
-func GetUserRequestFromAPI(req *models.GetUserRequest) (res *modelsRepo.GetUserRequest, err error) {
-	res.Login = req.Login
-	res.Password = req.Password
-
-	if req.ID == "" {
-		return
+func GetUserRequestFromAPI(req *models.GetUserRequest) (*modelsRepo.GetUserRequest, error) {
+	res := &modelsRepo.GetUserRequest{
+		Login:    req.Login,
+		Password: req.Password,
 	}
 
-	res.ID, err = primitive.ObjectIDFromHex(req.ID)
-	return
+	if req.ID == "" {
+		return res, nil
+	}
+
+	id, err := primitive.ObjectIDFromHex(req.ID)
+	if err != nil {
+		return nil, err
+	}
+	res.ID = id
+
+	return res, nil
 }
