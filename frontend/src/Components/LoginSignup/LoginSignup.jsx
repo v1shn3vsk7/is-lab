@@ -34,6 +34,11 @@ const LoginSignup = () => {
                         }
                     });
 
+                    if (response.status === 404) {
+                        setError("user is not found")
+                        return
+                    }
+
                     const userData = response.data
 
                     if (userData) {
@@ -48,6 +53,11 @@ const LoginSignup = () => {
                     }
 
                 } catch (error) {
+                    if (error.response && error.response.status === 404) {
+                        setError('Неверный логин и/или пароль')
+                        return
+                    }
+
                     setError(error.message)
                 }
 

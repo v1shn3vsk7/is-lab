@@ -7,3 +7,16 @@ type GetUserRequest struct {
 	Login    string
 	Password string
 }
+
+type UpdateUserPasswordRequest struct {
+	ID       primitive.ObjectID
+	Password string
+}
+
+type UpdateUserRequest struct {
+	Username             string
+	Login                string
+	Password             string
+	IsBlocked            bool
+	IsPasswordConstraint bool
+}

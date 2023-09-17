@@ -1,6 +1,7 @@
 package adapters
 
 import (
+	"fmt"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/v1shn3vsk7/is-lab/internal/models"
@@ -37,4 +38,18 @@ func GetUserRequestFromAPI(req *models.GetUserRequest) (*modelsRepo.GetUserReque
 	res.ID = id
 
 	return res, nil
+}
+
+func UpdateUserPasswordRequestFromAPI(req *models.UpdateUserPasswordRequest) (*modelsRepo.UpdateUserPasswordRequest, error) {
+	result := &modelsRepo.UpdateUserPasswordRequest{
+		Password: req.NewPassword,
+	}
+
+	id, err := primitive.ObjectIDFromHex(req.ID)
+	if err != nil {
+		return nil, fmt.Errorf("error decode id from api to ObjectId, err: %v", err)
+	}
+	result.ID = id
+
+	return result, nil
 }

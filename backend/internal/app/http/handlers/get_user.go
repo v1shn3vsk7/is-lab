@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	
+
 	"github.com/v1shn3vsk7/is-lab/internal/app/http/handlers/adapters"
 	"github.com/v1shn3vsk7/is-lab/internal/models"
 )
@@ -31,4 +31,13 @@ func (h *Handlers) GetUser(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, &user)
+}
+
+func (h *Handlers) ListUsers(c echo.Context) error {
+	users, err := h.repo.GetAllUsers(c.Request().Context())
+	if err != nil {
+		return errorWithLog(c, err, "get all users", "")
+	}
+
+	return c.JSON(http.StatusOK, users)
 }

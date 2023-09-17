@@ -10,4 +10,6 @@ import (
 type Repository interface {
 	CreateUser(ctx context.Context, user *models.User) (string, error)
 	GetUser(ctx context.Context, req *models.GetUserRequest) (*api.UserToAPI, error)
+	GetAllUsers(ctx context.Context) ([]*api.UserToAPI, error)
+	UpdateUserPassword(ctx context.Context, req *models.UpdateUserPasswordRequest) error
 }

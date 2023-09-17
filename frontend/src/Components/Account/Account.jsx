@@ -36,8 +36,8 @@ function Account() {
     // Function to handle password change
     const handlePasswordChange = async () => {
         try {
-            const response = await axios.post('http://localhost:8080/api/change_password', {
-                user_id,
+            const response = await axios.post('http://localhost:8080/api/update_user_password', {
+                user_id: user_id,
                 old_password: oldPassword,
                 new_password: newPassword,
             });
@@ -52,13 +52,12 @@ function Account() {
         }
     };
 
-    // Function to handle logout
     const handleLogout = () => {
         navigate(`/`)
     };
 
     return (
-        <div className="account-container"> {/* Apply the container class */}
+        <div className="account-container"> {}
             <h1>Account</h1>
             <p className="account-item">User ID: {user_id}</p>
             <p className="account-item">Username: {username}</p>

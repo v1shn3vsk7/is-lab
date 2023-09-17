@@ -26,3 +26,25 @@ func validateGetUserRequest(req *models.GetUserRequest) error {
 
 	return nil
 }
+
+func validateUpdateUserPasswordRequest(req *models.UpdateUserPasswordRequest, isPasswordConstraint bool) error {
+	if strings.TrimSpace(req.ID) == "" &&
+		strings.TrimSpace(req.NewPassword) == "" &&
+		strings.TrimSpace(req.OldPassword) == "" {
+		return errors.New("empty request")
+	}
+
+	if strings.TrimSpace(req.ID) == "" {
+		return errors.New("user id is empty")
+	}
+
+	if strings.TrimSpace(req.NewPassword) == "" {
+		return errors.New("new password is empty")
+	}
+
+	if strings.TrimSpace(req.OldPassword) == "" {
+		return errors.New("olp password is empty")
+	}
+
+	return nil
+}

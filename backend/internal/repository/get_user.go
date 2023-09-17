@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/v1shn3vsk7/is-lab/internal/repository/adapters"
+	"go.mongodb.org/mongo-driver/bson"
 
 	"go.mongodb.org/mongo-driver/mongo"
 
@@ -23,10 +25,22 @@ func (r *RepoImpl) GetUser(ctx context.Context, req *models.GetUserRequest) (*ap
 		return nil, fmt.Errorf("error find user, err: %v", err)
 	}
 
-	return &api.UserToAPI{
-		ID:                   user.ID.Hex(),
-		Username:             user.Username,
-		IsBlocked:            user.Preference.IsBlocked,
-		IsPasswordConstraint: user.Preference.IsPasswordConstraint,
-	}, nil
+	return adapters.UserToAPI(user), nil
+}
+
+func (r *RepoImpl) GetAllUsers(ctx context.Context) ([]*api.UserToAPI, error) {
+	cursor, err := r.UsersCL.Find(ctx, bson.M{}, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error get all users from db, err: %v", err)
+	}
+	if !cursor.TryNext(ctx) {
+		return nil, modelsCmn.ErrNotFound
+	}
+
+	var users []*models.User
+	if err = cursor.All(ctx, &users); err != nil {
+		return nil, fmt.Errorf("error decode users from db, err: %v", err)
+	}
+
+	return adapters.UsersToAPI(users), nil
 }
