@@ -12,7 +12,7 @@ type CreateUserResponse struct {
 
 type UserToAPI struct {
 	ID                   string `json:"user_id"`
-	Nickname             string `json:"nickname"`
+	Username             string `json:"username"`
 	IsBlocked            bool   `json:"is_blocked"`
 	IsPasswordConstraint bool   `json:"is_password_constraint"`
 }

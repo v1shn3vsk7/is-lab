@@ -12,14 +12,21 @@ import (
 	"github.com/v1shn3vsk7/is-lab/internal/repository/models"
 )
 
-func (r *RepoImpl) GetUser(ctx context.Context, req *models.GetUserRequest) (res *api.UserToAPI, err error) {
+func (r *RepoImpl) GetUser(ctx context.Context, req *models.GetUserRequest) (*api.UserToAPI, error) {
 	filter := getUserFilter(req)
-	if err = r.UsersCL.FindOne(ctx, filter, nil).Decode(&res); err != nil {
+
+	var user *models.User
+	if err := r.UsersCL.FindOne(ctx, filter, nil).Decode(&user); err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
 			return nil, modelsCmn.ErrNotFound
 		}
 		return nil, fmt.Errorf("error find user, err: %v", err)
 	}
 
-	return
+	return &api.UserToAPI{
+		ID:                   user.ID.Hex(),
+		Username:             user.Username,
+		IsBlocked:            user.Preference.IsBlocked,
+		IsPasswordConstraint: user.Preference.IsPasswordConstraint,
+	}, nil
 }
