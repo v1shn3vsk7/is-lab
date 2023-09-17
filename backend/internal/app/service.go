@@ -16,6 +16,7 @@ func Run(ctx context.Context, cfg *config.Config) error {
 	mng := bootstrap.New(ctx, cfg)
 
 	repo := repository.New(cfg, mng)
+	repo.CreateIndexes(ctx)
 
 	httpServer := http.New(cfg, repo)
 	httpServer.Start()

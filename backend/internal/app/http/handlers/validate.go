@@ -2,22 +2,26 @@ package handlers
 
 import (
 	"errors"
-	"regexp"
+	"strings"
 
 	"github.com/v1shn3vsk7/is-lab/internal/models"
 )
 
-var (
-	passwordPattern = regexp.MustCompile(``)
-)
-
 func validateCreateUserRequest(req *models.CreateUserRequest) error {
-	if len(req.Login) == 0 || len(req.Password) == 0 || len(req.Username) == 0 {
+	if len(strings.TrimSpace(req.Login)) == 0 ||
+		len(strings.TrimSpace(req.Password)) == 0 ||
+		len(strings.TrimSpace(req.Username)) == 0 {
 		return errors.New("empty request")
 	}
 
-	if !passwordPattern.MatchString(req.Password) {
-		return errors.New("password must match pattern")
+	return nil
+}
+
+func validateGetUserRequest(req *models.GetUserRequest) error {
+	if strings.TrimSpace(req.ID) == "" &&
+		strings.TrimSpace(req.Login) == "" &&
+		strings.TrimSpace(req.Password) == "" {
+		return errors.New("empty request")
 	}
 
 	return nil

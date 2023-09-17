@@ -20,9 +20,10 @@ func (h *Handlers) CreateUser(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, &models.ErrResponse{Err: err.Error()})
 	}
 
-	if err = h.repo.CreateUser(c.Request().Context(), adapters.UserFromAPI(req)); err != nil {
+	id, err := h.repo.CreateUser(c.Request().Context(), adapters.UserFromAPI(req))
+	if err != nil {
 		return errorWithLog(c, err, "create user", c.Request())
 	}
 
-	return c.JSON(http.StatusOK, &models.EmptyResponse{})
+	return c.JSON(http.StatusOK, &models.CreateUserResponse{UserID: id})
 }

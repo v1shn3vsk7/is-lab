@@ -3,9 +3,14 @@ package models
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
 type User struct {
-	ID        primitive.ObjectID `bson:"_id"`
-	Username  string             `bson:"username"`
-	Login     string             `bson:"login"`
-	Password  string             `bson:"password"`
-	IsBlocked bool               `bson:"is_blocked"`
+	ID         primitive.ObjectID `bson:"_id"`
+	Username   string             `bson:"username"`
+	Login      string             `bson:"login"`
+	Password   string             `bson:"password"`
+	Preference *UserPreference    `bson:"preference"`
+}
+
+type UserPreference struct {
+	IsBlocked            bool `bson:"is_blocked"`
+	IsPasswordConstraint bool `bson:"is_password_constraint"`
 }
