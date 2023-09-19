@@ -6,4 +6,6 @@ func (s *Server) setupRoutes() {
 	s.server.POST("/api/signup", s.handlers.CreateUser)
 	s.server.GET("/api/find_user", s.handlers.GetUser)
 	s.server.GET("/api/list_users", s.handlers.ListUsers)
+	s.server.POST("/api/update_user_password", s.handlers.UpdateUserPassword)
+	s.server.PATCH("/api/update_user", s.handlers.UpdateUser)
 }

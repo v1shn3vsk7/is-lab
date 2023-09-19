@@ -14,9 +14,10 @@ type UpdateUserPasswordRequest struct {
 }
 
 type UpdateUserRequest struct {
+	ID                   primitive.ObjectID
 	Username             string
 	Login                string
 	Password             string
-	IsBlocked            bool
-	IsPasswordConstraint bool
+	IsBlocked            *bool
+	IsPasswordConstraint *bool
 }

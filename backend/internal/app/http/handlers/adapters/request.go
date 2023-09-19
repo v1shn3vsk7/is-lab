@@ -53,3 +53,18 @@ func UpdateUserPasswordRequestFromAPI(req *models.UpdateUserPasswordRequest) (*m
 
 	return result, nil
 }
+
+func UpdateUserRequestFromAPI(req *models.UpdateUserRequest) (*modelsRepo.UpdateUserRequest, error) {
+	res := &modelsRepo.UpdateUserRequest{
+		IsBlocked:            req.IsBlocked,
+		IsPasswordConstraint: req.IsPasswordConstraint,
+	}
+
+	id, err := primitive.ObjectIDFromHex(req.ID)
+	if err != nil {
+		return nil, err
+	}
+	res.ID = id
+
+	return res, nil
+}

@@ -41,8 +41,28 @@ const LoginSignup = () => {
 
                     const userData = response.data
 
+                    if (userData.is_blocked) {
+                        // это дерьмище не работает
+                        //navigate('/blocked-page')
+
+                        window.location.href = '/blocked-page';
+                    }
+
+                    if (email === "ADMIN") {
+                        console.log("ADMIN DETECTED")
+                        navigate(`/admin-page/${userData.user_id}`, {
+                            state: {
+                                user_id: userData.user_id,
+                                username: userData.username,
+                                is_blocked: userData.is_blocked,
+                                is_password_constraint: userData.is_password_constraint,
+                            }
+                        })
+                        return
+                    }
+
                     if (userData) {
-                        navigate(`/account/${userData.ID}`, {
+                        navigate(`/account/${userData.user_id}`, {
                             state: {
                                 user_id: userData.user_id,
                                 username: userData.username,

@@ -23,3 +23,19 @@ func (r *RepoImpl) UpdateUserPassword(ctx context.Context, req *modelsRepo.Updat
 
 	return nil
 }
+
+func (r *RepoImpl) UpdateUser(ctx context.Context, req *modelsRepo.UpdateUserRequest) error {
+	filter := FilterByID(req.ID)
+	update := UpdateUserFilter(req)
+
+	res, err := r.UsersCL.UpdateOne(ctx, filter, update, nil)
+	if err != nil {
+		return fmt.Errorf("error updating user, err: %v", err)
+	}
+
+	if res.ModifiedCount == 0 {
+		return modelsCmn.ErrAlreadyExists
+	}
+
+	return nil
+}

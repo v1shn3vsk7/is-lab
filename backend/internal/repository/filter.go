@@ -1,9 +1,10 @@
 package repository
 
 import (
-	"github.com/v1shn3vsk7/is-lab/internal/repository/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+
+	"github.com/v1shn3vsk7/is-lab/internal/repository/models"
 )
 
 func getUserFilter(req *models.GetUserRequest) bson.M {
@@ -33,12 +34,19 @@ func FilterByID(id primitive.ObjectID) bson.M {
 	}
 }
 
-func UpdateField(fieldName string, field interface{}) bson.M {
+func UpdateField(field string, value interface{}) bson.M {
 	return bson.M{
-		"$update": bson.M{
-			"$set": bson.M{
-				fieldName: field,
-			},
+		"$set": bson.M{
+			field: value,
 		},
 	}
+}
+
+// мне лень нормальный фильтр сделать
+func UpdateUserFilter(req *models.UpdateUserRequest) bson.M {
+	if req.IsBlocked != nil {
+		return UpdateField("preference.is_blocked", req.IsBlocked)
+	}
+
+	return UpdateField("preference.is_password_constraint", req.IsPasswordConstraint)
 }

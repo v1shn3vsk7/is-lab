@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import './Account.css'; // Import the CSS file
+import './Account.css';
 import axios from 'axios';
 
 function Account() {
@@ -8,7 +8,11 @@ function Account() {
     const navigate = useNavigate()
     const { user_id, username, is_blocked, is_password_constraint } = location.state;
 
-    // State for the modal and form fields
+    // prevent user to enter blocked account directly from url
+    if (is_blocked) {
+        window.location.href = '/blocked-page';
+    }
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -16,25 +20,42 @@ function Account() {
     const [passwordChangeSuccess, setPasswordChangeSuccess] = useState(false);
     const [error, setError] = useState('');
 
-    // Function to open the modal
     const openModal = () => {
         setIsModalOpen(true);
-        setPasswordChangeSuccess(false); // Reset success message
+        setPasswordChangeSuccess(false);
         setError('');
     };
 
-    // Function to close the modal
     const closeModal = () => {
         setIsModalOpen(false);
         setOldPassword('');
         setNewPassword('');
         setRepeatNewPassword('');
-        setPasswordChangeSuccess(false); // Reset success message
+        setPasswordChangeSuccess(false);
         setError('');
     };
 
-    // Function to handle password change
     const handlePasswordChange = async () => {
+        if (!(oldPassword && repeatNewPassword && newPassword)) {
+            setError('Заполните все поля')
+            return
+        }
+
+        if (newPassword !== repeatNewPassword) {
+            setError('Пароли не совпадают')
+            return
+        }
+
+        if (newPassword === oldPassword) {
+            setError('Такой пароль уже установлен')
+            return
+        }
+
+        if (is_password_constraint && !/^[A-Za-z0-9]+[.|,|;|:|-|!|?]+$/.test(newPassword)) {
+            setError('На Ваш пароль действует ограничение: пароль должен иметь числа и знаки препинания');
+            return;
+        }
+
         try {
             const response = await axios.post('http://localhost:8080/api/update_user_password', {
                 user_id: user_id,
@@ -59,22 +80,19 @@ function Account() {
     return (
         <div className="account-container"> {}
             <h1>Account</h1>
-            <p className="account-item">User ID: {user_id}</p>
-            <p className="account-item">Username: {username}</p>
+            <p className="account-item">ID Пользователя: {user_id}</p>
+            <p className="account-item">ФИО: {username}</p>
             <p className="account-item">
-                Is Blocked: <span className={is_blocked ? 'yes' : 'no'}>{is_blocked ? 'Yes' : 'No'}</span>
+                Заблокирован: <span className={is_blocked ? 'Да' : 'Нет'}>{is_blocked ? 'Да' : 'Нет'}</span>
             </p>
             <p className="account-item">
-                Has Password Constraint: <span className={is_password_constraint ? 'yes' : 'no'}>{is_password_constraint ? 'Yes' : 'No'}</span>
+                Ограничение на пароль: <span className={is_password_constraint ? 'Да' : 'Нет'}>{is_password_constraint ? 'Да' : 'Нет'}</span>
             </p>
 
-            {/* Button to open the password change modal */}
             <button onClick={openModal}>Change Password</button>
 
-            {/* Button to log out */}
             <button onClick={handleLogout} className="logout-button">Log Out</button>
 
-            {/* Modal for changing password */}
             {isModalOpen && (
                 <div className="modal">
                     <div className="modal-content">

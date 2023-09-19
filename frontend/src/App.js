@@ -2,6 +2,8 @@ import './App.css';
 import LoginSignup from "./Components/LoginSignup/LoginSignup";
 import ProgramInfo from "./Components/ProgramInfo/ProgramInfo";
 import Account from "./Components/Account/Account"
+import BlockedPage from "./Components/BlockedPage/BlockedPage"
+import AdminPage from "./Components/AdminPage/AdminPage";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -11,11 +13,24 @@ function App() {
               <Route path="/" element={<div>
                   <ProgramInfo/>
                   <LoginSignup/>
-              </div>}></Route>
+              </div>}>
+              </Route>
 
               <Route path="/account/:user_id" element={
                   <div><Account/></div>
-              }></Route>
+              }>
+              </Route>
+
+              <Route path="/blocked-page" element={
+                  <div><BlockedPage/></div>
+              }>
+              </Route>
+
+              <Route path="/admin-page/:user_id" element={
+                  <div><AdminPage/></div>
+              }>
+              </Route>
+
           </Routes>
       </Router>
 
