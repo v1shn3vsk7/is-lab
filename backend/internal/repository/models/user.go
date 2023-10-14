@@ -3,11 +3,12 @@ package models
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
 type User struct {
-	ID         primitive.ObjectID `bson:"_id"`
-	Username   string             `bson:"username"`
-	Login      string             `bson:"login"`
-	Password   string             `bson:"password"`
-	Preference *UserPreference    `bson:"preference"`
+	ID           primitive.ObjectID `bson:"_id"`
+	Username     string             `bson:"username"`
+	Login        string             `bson:"login"`
+	Password     string             `bson:"password"`
+	PasswordSalt string             `bson:"password_salt"`
+	Preference   *UserPreference    `bson:"preference"`
 }
 
 type UserPreference struct {

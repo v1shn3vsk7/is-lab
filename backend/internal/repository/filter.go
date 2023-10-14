@@ -8,13 +8,10 @@ import (
 )
 
 func getUserFilter(req *models.GetUserRequest) bson.M {
-	if req.Login != "" && req.Password != "" {
+	if req.Login != "" {
 		return bson.M{
 			"login": bson.M{
 				"$eq": req.Login,
-			},
-			"password": bson.M{
-				"$eq": req.Password,
 			},
 		}
 	}

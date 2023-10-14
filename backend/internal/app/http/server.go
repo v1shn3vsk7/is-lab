@@ -23,7 +23,6 @@ type Server struct {
 
 func New(cfg *config.Config, repo repository.Repository) *Server {
 	server := echo.New()
-	server.Use(middleware.Logger())
 	server.Use(middleware.Recover())
 	server.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"http://localhost:3000"},

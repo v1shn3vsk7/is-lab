@@ -13,7 +13,12 @@ import (
 )
 
 func New(ctx context.Context, cfg *config.Config) *mongo.Client {
-	opts := options.Client().ApplyURI(cfg.MngDSN)
+	opts := options.Client().
+		ApplyURI(cfg.MngDSN).
+		SetMaxPoolSize(uint64(cfg.MngMaxPoolSize)).
+		SetMinPoolSize(uint64(cfg.MngMinPoolSize)).
+		SetMaxConnecting(uint64(cfg.MngMaxConnecting))
+
 	client, err := mongo.Connect(ctx, opts)
 	if err != nil {
 		log.Fatal().Msgf("error connect to mongo, err: %v", err)

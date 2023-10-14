@@ -5,6 +5,7 @@ import Account from "./Components/Account/Account"
 import BlockedPage from "./Components/BlockedPage/BlockedPage"
 import AdminPage from "./Components/AdminPage/AdminPage";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import SetupPassword from "./Components/SetupPassword/SetupPassword";
 
 function App() {
   return (
@@ -28,6 +29,11 @@ function App() {
 
               <Route path="/admin-page/:user_id" element={
                   <div><AdminPage/></div>
+              }>
+              </Route>
+
+              <Route path="/setup-password/:user_id" element={
+                  <div><SetupPassword/></div>
               }>
               </Route>
 

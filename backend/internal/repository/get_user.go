@@ -4,17 +4,17 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/v1shn3vsk7/is-lab/internal/repository/adapters"
-	"go.mongodb.org/mongo-driver/bson"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	api "github.com/v1shn3vsk7/is-lab/internal/models"
 	modelsCmn "github.com/v1shn3vsk7/is-lab/internal/models"
+	"github.com/v1shn3vsk7/is-lab/internal/repository/adapters"
 	"github.com/v1shn3vsk7/is-lab/internal/repository/models"
 )
 
-func (r *RepoImpl) GetUser(ctx context.Context, req *models.GetUserRequest) (*api.UserToAPI, error) {
+func (r *RepoImpl) GetUser(ctx context.Context, req *models.GetUserRequest) (*models.User, error) {
 	filter := getUserFilter(req)
 
 	var user *models.User
@@ -25,7 +25,7 @@ func (r *RepoImpl) GetUser(ctx context.Context, req *models.GetUserRequest) (*ap
 		return nil, fmt.Errorf("error find user, err: %v", err)
 	}
 
-	return adapters.UserToAPI(user), nil
+	return user, nil
 }
 
 func (r *RepoImpl) GetAllUsers(ctx context.Context) ([]*api.UserToAPI, error) {

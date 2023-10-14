@@ -6,7 +6,7 @@ import axios from 'axios';
 function Account() {
     const location = useLocation();
     const navigate = useNavigate()
-    const { user_id, username, is_blocked, is_password_constraint } = location.state;
+    const { user_id, username, is_blocked, is_password_constraint, is_empty_password, login } = location.state;
 
     // prevent user to enter blocked account directly from url
     if (is_blocked) {
@@ -80,7 +80,7 @@ function Account() {
     return (
         <div className="account-container"> {}
             <h1>Account</h1>
-            <p className="account-item">ID Пользователя: {user_id}</p>
+            <p className="account-item">Логин: {login}</p>
             <p className="account-item">ФИО: {username}</p>
             <p className="account-item">
                 Заблокирован: <span className={is_blocked ? 'Да' : 'Нет'}>{is_blocked ? 'Да' : 'Нет'}</span>

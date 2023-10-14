@@ -25,7 +25,7 @@ const LoginSignup = () => {
                 return
             }
 
-            if (email && password) {
+            if (email) {
                 try {
                     const response = await axios.get('http://localhost:8080/api/find_user', {
                         params: {
@@ -42,13 +42,23 @@ const LoginSignup = () => {
                     const userData = response.data
 
                     if (userData.is_blocked) {
-                        // это дерьмище не работает
-                        //navigate('/blocked-page')
-
                         window.location.href = '/blocked-page';
                     }
 
-                    if (email === "ADMIN") {
+                    if (userData.is_empty_password) {
+                        navigate(`/setup-password/${userData.user_id}`, {
+                            state: {
+                                user_id: userData.user_id,
+                                is_password_constraint: userData.is_password_constraint,
+                                username: userData.username,
+                                is_blocked: userData.is_blocked,
+                                login: email,
+                            }
+                        })
+                        return
+                    }
+
+                    if (email === "admin") {
                         console.log("ADMIN DETECTED")
                         navigate(`/admin-page/${userData.user_id}`, {
                             state: {
@@ -61,6 +71,19 @@ const LoginSignup = () => {
                         return
                     }
 
+                    if (userData.is_password_constraint && !/^[A-Za-z0-9]+[.|,|;|:|-|!|?]+$/.test(password)) {
+                        navigate(`/setup-password/${userData.user_id}`, {
+                            state: {
+                                user_id: userData.user_id,
+                                is_password_constraint: userData.is_password_constraint,
+                                username: userData.username,
+                                is_blocked: userData.is_blocked,
+                                login: email,
+                            }
+                        })
+                        return
+                    }
+
                     if (userData) {
                         navigate(`/account/${userData.user_id}`, {
                             state: {
@@ -68,50 +91,20 @@ const LoginSignup = () => {
                                 username: userData.username,
                                 is_blocked: userData.is_blocked,
                                 is_password_constraint: userData.is_password_constraint,
+                                is_empty_password: userData.is_empty_password,
+                                login: email,
                             },
                         });
                     }
 
                 } catch (error) {
-                    if (error.response && error.response.status === 404) {
+                    if (error.response && error.response.status === 404 || error.response.status === 400) {
                         setError('Неверный логин и/или пароль')
                         return
                     }
 
                     setError(error.message)
                 }
-
-            } else {
-                setError('Пожалуйста, заполните все поля');
-            }
-        } else if (event.target.innerText === 'Регистрация') {
-            if (action === "Вход") {
-                setAction("Регистрация")
-                return
-            }
-
-            if (email && password && fio) {
-                const request = {
-                    username: fio,
-                    login: email,
-                    password: password
-                }
-
-                fetch('http://localhost:8080/api/signup', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(request)
-                }).then(response => {
-                    if (response.ok) {
-                        console.log("login OK")
-                    } else {
-                        setError(response.get("error"))
-                    }
-                }).catch(error => {
-                    console.error('Error:', error);
-                })
 
             } else {
                 setError('Пожалуйста, заполните все поля');

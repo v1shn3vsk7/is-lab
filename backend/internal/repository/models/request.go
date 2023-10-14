@@ -9,8 +9,9 @@ type GetUserRequest struct {
 }
 
 type UpdateUserPasswordRequest struct {
-	ID       primitive.ObjectID
-	Password string
+	ID           primitive.ObjectID
+	Password     string
+	PasswordSalt string
 }
 
 type UpdateUserRequest struct {
@@ -20,4 +21,10 @@ type UpdateUserRequest struct {
 	Password             string
 	IsBlocked            *bool
 	IsPasswordConstraint *bool
+}
+
+type SetupUserPasswordRequest struct {
+	ID           primitive.ObjectID
+	Password     string
+	PasswordSalt string
 }

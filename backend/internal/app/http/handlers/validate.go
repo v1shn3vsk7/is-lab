@@ -1,10 +1,13 @@
 package handlers
 
 import (
+	"encoding/base64"
 	"errors"
 	"strings"
 
 	"github.com/v1shn3vsk7/is-lab/internal/models"
+	modelsRepo "github.com/v1shn3vsk7/is-lab/internal/repository/models"
+	"github.com/v1shn3vsk7/is-lab/internal/tech/hash"
 )
 
 func validateCreateUserRequest(req *models.CreateUserRequest) error {
@@ -55,4 +58,19 @@ func validateUpdateUserRequest(req *models.UpdateUserRequest) error {
 	}
 
 	return nil
+}
+
+func validateUserPasswordFromAPI(req *models.GetUserRequest, user *modelsRepo.User) bool {
+	if req.Password == "" && user.Password == "" {
+		return true
+	}
+
+	salt, err := base64.StdEncoding.DecodeString(user.PasswordSalt)
+	if err != nil {
+		return false
+	}
+
+	reqPassB, _ := hash.EncryptSecret(req.Password, salt)
+
+	return user.Password == reqPassB
 }

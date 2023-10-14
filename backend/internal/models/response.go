@@ -15,4 +15,6 @@ type UserToAPI struct {
 	Username             string `json:"username"`
 	IsBlocked            bool   `json:"is_blocked"`
 	IsPasswordConstraint bool   `json:"is_password_constraint"`
+	IsEmptyPassword      bool   `json:"is_empty_password"`
+	Login                string `json:"login"`
 }

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -30,11 +31,15 @@ func (h *Handlers) GetUser(c echo.Context) error {
 		return errorWithLog(c, err, "get user", getRequest)
 	}
 
-	return c.JSON(http.StatusOK, &user)
+	if !validateUserPasswordFromAPI(req, user) {
+		return c.JSON(http.StatusBadRequest, &models.ErrResponse{Err: "invalid login and/or password"})
+	}
+
+	return c.JSON(http.StatusOK, adapters.UserToAPI(user))
 }
 
 func (h *Handlers) ListUsers(c echo.Context) error {
-	users, err := h.repo.GetAllUsers(c.Request().Context())
+	users, err := h.repo.GetAllUsers(context.Background())
 	if err != nil {
 		return errorWithLog(c, err, "get all users", "")
 	}

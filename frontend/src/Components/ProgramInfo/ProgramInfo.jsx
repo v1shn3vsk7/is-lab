@@ -12,7 +12,7 @@ const ProgramInfo = () => {
         <div className="modal-content">
             <h2>О Программе</h2>
             <p>Автор: Васильев Владимир</p>
-            <p>Вариант: №5</p>
+            <p>Вариант: №4</p>
         </div>
     );
 
